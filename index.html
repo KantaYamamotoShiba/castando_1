@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>モノづくりの世界を冒険しよう！</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #673AB7;
+            --primary-light: #D1C4E9;
+            --accent-color: #FF9800;
+            --background: #F5F5F5;
+            --text-dark: #212121;
+            --text-light: #757575;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text-dark);
+            font-family: 'Roboto', 'Noto Sans JP', sans-serif;
+            line-height: 1.6;
+        }
+        
+        nav {
+            background-color: var(--primary-color);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .nav-wrapper {
+            padding: 0 20px;
+        }
+        
+        .brand-logo {
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+        
+        .brand-logo i {
+            margin-right: 10px;
+        }
+        
+        .section {
+            padding: 40px 0;
+        }
+        
+        .intro {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            font-weight: 900;
+            color: var(--primary-color);
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        h2 {
+            font-weight: 700;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .card {
+            border-radius: 12px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow: hidden;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        .card .card-content {
+            padding: 24px;
+        }
+        
+        .card .card-title {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .card .card-title i {
+            margin-right: 10px;
+            color: var(--accent-color);
+        }
+        
+        .matterport-container {
+            width: 100%;
+            height: 500px;
+            position: relative;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        .chip {
+            background-color: var(--primary-light);
+            font-weight: 500;
+            margin: 5px;
+        }
+        
+        .progress-container {
+            margin: 30px auto;
+            max-width: 600px;
+        }
+        
+        .progress-bar {
+            background-color: #E0E0E0;
+            border-radius: 30px;
+            height: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .progress-fill {
+            background-color: var(--accent-color);
+            height: 100%;
+            width: 20%;
+            border-radius: 30px;
+            position: absolute;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-points {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            width: 60px;
+        }
+        
+        .point-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 10px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .point-active {
+            background-color: var(--accent-color);
+            transform: scale(1.1);
+        }
+        
+        .point-completed {
+            background-color: var(--primary-color);
+        }
+        
+        .point-inactive {
+            background-color: #BDBDBD;
+        }
+        
+        .point-label {
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-align: center;
+            color: var(--text-light);
+        }
+        
+        .btn-large {
+            background-color: var(--accent-color);
+            border-radius: 30px;
+            box-shadow: 0 4px 10px rgba(255, 152, 0, 0.3);
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin: 20px 0;
+            padding: 0 30px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-large:hover {
+            background-color: #FB8C00;
+            box-shadow: 0 6px 15px rgba(255, 152, 0, 0.4);
+            transform: translateY(-3px);
+        }
+        
+        .btn-large i {
+            margin-left: 10px;
+        }
+        
+        .btn-large.inactive {
+            background-color: #BDBDBD;
+            box-shadow: none;
+            pointer-events: none;
+        }
+        
+        .tour-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .fun-fact {
+            background-color: var(--primary-light);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .fun-fact i {
+            color: var(--primary-color);
+            margin-right: 10px;
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 40px 0;
+            margin-top: 40px;
+        }
+        
+        .achievement {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .achievement-icon {
+            background-color: var(--accent-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+        }
+        
+        .achievement-icon i {
+            color: white;
+            font-size: 24px;
+        }
+        
+        .achievement-text {
+            flex: 1;
+        }
+        
+        .achievement-text h5 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .achievement-text p {
+            margin: 5px 0 0;
+            color: #757575;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        @media (max-width: 768px) {
+            .matterport-container {
+                height: 350px;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.5rem;
+            }
+            
+            .point {
+                width: 40px;
+            }
+            
+            .point-circle {
+                width: 30px;
+                height: 30px;
+                font-size: 0.8rem;
+            }
+            
+            .point-label {
+                font-size: 0.6rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo"><i class="material-icons">precision_manufacturing</i>モノづくり冒険記</a>
+            <ul id="nav-mobile" class="right hide-on-med-and-down">
+                <li><a href="#progress"><i class="material-icons left">directions_run</i>進捗状況</a></li>
+                <li><a href="#achievements"><i class="material-icons left">emoji_events</i>実績</a></li>
+            </ul>
+        </div>
+    </nav>
+    
+    <div class="container">
+        <div class="section">
+            <div class="intro">
+                <h1>モノづくりの世界へようこそ！</h1>
+                <p class="flow-text">この冒険では、工場の現場を巡りながら製造業の魅力を発見していきます。360°パノラマで自由に探索して、ものづくりの秘密を解き明かそう！</p>
+            </div>
+            
+            <div id="progress" class="progress-container">
+                <h2 class="center">あなたの冒険マップ</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="progress-points">
+                    <div class="point">
+                        <div class="point-circle point-active" id="point1">1</div>
+                        <div class="point-label">鋳物工場</div>
+                    </div>
+                    <div class="point">
+                        <div class="point-circle point-inactive" id="point2">2</div>
+                        <div class="point-label">機械工場</div>
+                    </div>
+                    <div class="point">
+                        <div class="point-circle point-inactive" id="point3">3</div>
+                        <div class="point-label">マスター認定</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" id="foundry">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title"><i class="material-icons">local_fire_department</i>鋳物工場</span>
+                            <p>金属を溶かして形を作る工程を見てみよう！1,500℃の熱い世界で、どうやって様々な形の金属部品が生まれるのか、その秘密を探検しよう。</p>
+                            <div class="matterport-container">
+                                <iframe src="https://my.matterport.com/show/?m=NxbxjLudf9C" frameborder="0" allowfullscreen allow="xr-spatial-tracking"></iframe>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <div class="chip"><i class="material-icons left">whatshot</i>溶解炉</div>
+                                <div class="chip"><i class="material-icons left">category</i>鋳型製造</div>
+                                <div class="chip"><i class="material-icons left">build</i>仕上げ工程</div>
+                                <div class="chip"><i class="material-icons left">check_circle</i>品質検査</div>
+                            </div>
+                            
+                            <div class="fun-fact">
+                                <i class="material-icons left">lightbulb</i>
+                                <b>豆知識：</b>鋳物技術は5000年以上の歴史があり、現代の工場でも昔ながらの技と最新技術が融合しています！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section" id="machine">
+            <div class="row">
+                <div class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span class="card-title"><i class="material-icons">precision_manufacturing</i>機械工場</span>
+                            <p>ミクロン単位の精密加工が行われる機械工場を探索しよう！最新のロボットや工作機械がどのように部品を削り出すのか、その技術を見てみよう。</p>
+                            <div class="matterport-container">
+                                <iframe src="https://my.matterport.com/show/?m=9fTux43jLR1" frameborder="0" allowfullscreen allow="xr-spatial-tracking"></iframe>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <div class="chip"><i class="material-icons left">construction</i>加工センター</div>
+                                <div class="chip"><i class="material-icons left">settings</i>組立ライン</div>
+                                <div class="chip"><i class="material-icons left">search</i>検査エリア</div>
+                                <div class="chip"><i class="material-icons left">smart_toy</i>自動化設備</div>
+                            </div>
+                            
+                            <div class="fun-fact">
+                                <i class="material-icons left">lightbulb</i>
+                                <b>豆知識：</b>最新のCNC工作機械は、髪の毛の太さ（約0.1mm）の100分の1の精度で加工できるものもあります！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section center">
+            <h2>次のステップは？</h2>
+            <p>各工場を探索して、モノづくりの知識を深めよう！探索が完了すると、次のステージが解放されます。</p>
+            
+            <div class="tour-buttons">
+                <a class="waves-effect waves-light btn-large" id="foundryBtn">
+                    鋳物工場を探索<i class="material-icons right">arrow_forward</i>
+                </a>
+                <a class="waves-effect waves-light btn-large inactive" id="machineBtn">
+                    機械工場を探索<i class="material-icons right">arrow_forward</i>
+                </a>
+                <a class="waves-effect waves-light btn-large inactive" id="certificateBtn">
+                    モノづくりマスター認定<i class="material-icons right">school</i>
+                </a>
+            </div>
+        </div>
+        
+        <div class="section hidden" id="achievements">
+            <h2 class="center">獲得した実績</h2>
+            
+            <div class="row">
+                <div class="col s12 m6">
+                    <div class="achievement" id="achievement1">
+                        <div class="achievement-icon">
+                            <i class="material-icons">local_fire_department</i>
+                        </div>
+                        <div class="achievement-text">
+                            <h5>鋳物探検家</h5>
+                            <p>鋳物工場を隅々まで探索した</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col s12 m6">
+                    <div class="achievement" id="achievement2">
+                        <div class="achievement-icon">
+                            <i class="material-icons">precision_manufacturing</i>
+                        </div>
+                        <div class="achievement-text">
+                            <h5>機械工学者</h5>
+                            <p>機械工場の全エリアを見学した</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col s12 m6">
+                    <div class="achievement" id="achievement3">
+                        <div class="achievement-icon">
+                            <i class="material-icons">school</i>
+                        </div>
+                        <div class="achievement-text">
+                            <h5>モノづくりマスター</h5>
+                            <p>製造プロセスの全体を理解した</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col s12 m6">
+                    <div class="achievement" id="achievement4">
+                        <div class="achievement-icon">
+                            <i class="material-icons">bolt</i>
+                        </div>
+                        <div class="achievement-text">
+                            <h5>スピード探検家</h5>
+                            <p>10分以内に両工場を見学した</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col s12 m6">
+                    <h5>モノづくり冒険記</h5>
+                    <p>製造業の魅力を若い世代へ伝えるバーチャル工場見学プロジェクト</p>
+                </div>
+                <div class="col s12 m6">
+                    <h5>チャレンジを共にする仲間募集中！</h5>
+                    <p>ものづくりの世界で一緒に未来を創りましょう</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初期状態では鋳物工場だけ有効
+            let progress = 0;
+            let foundryCompleted = false;
+            let machineCompleted = false;
+            
+            const progressFill = document.getElementById('progressFill');
+            const foundryBtn = document.getElementById('foundryBtn');
+            const machineBtn = document.getElementById('machineBtn');
+            const certificateBtn = document.getElementById('certificateBtn');
+            const point1 = document.getElementById('point1');
+            const point2 = document.getElementById('point2');
+            const point3 = document.getElementById('point3');
+            
+            // 鋳物工場探索完了
+            foundryBtn.addEventListener('click', function() {
+                if (!foundryCompleted) {
+                    foundryCompleted = true;
+                    progress = 50;
+                    progressFill.style.width = progress + '%';
+                    point1.classList.remove('point-active');
+                    point1.classList.add('point-completed');
+                    point2.classList.remove('point-inactive');
+                    point2.classList.add('point-active');
+                    machineBtn.classList.remove('inactive');
+                    
+                    // 実績解除
+                    document.getElementById('achievement1').style.opacity = '1';
+                    
+                    // トースト通知
+                    M.toast({html: '🎉 新しい実績解除：鋳物探検家！', classes: 'rounded'});
+                    M.toast({html: '🔓 機械工場が解放されました！', classes: 'rounded'});
+                }
+            });
+            
+            // 機械工場探索完了
+            machineBtn.addEventListener('click', function() {
+                if (!machineCompleted && foundryCompleted) {
+                    machineCompleted = true;
+                    progress = 90;
+                    progressFill.style.width = progress + '%';
+                    point2.classList.remove('point-active');
+                    point2.classList.add('point-completed');
+                    point3.classList.remove('point-inactive');
+                    point3.classList.add('point-active');
+                    certificateBtn.classList.remove('inactive');
+                    
+                    // 実績解除
+                    document.getElementById('achievement2').style.opacity = '1';
+                    
+                    // トースト通知
+                    M.toast({html: '🎉 新しい実績解除：機械工学者！', classes: 'rounded'});
+                    M.toast({html: '🔓 マスター認定が解放されました！', classes: 'rounded'});
+                }
+            });
+            
+            // マスター認定完了
+            certificateBtn.addEventListener('click', function() {
+                if (foundryCompleted && machineCompleted) {
+                    progress = 100;
+                    progressFill.style.width = progress + '%';
+                    point3.classList.remove('point-active');
+                    point3.classList.add('point-completed');
+                    
+                    // 実績解除
+                    document.getElementById('achievement3').style.opacity = '1';
+                    
+                    // 隠し実績
+                    if (Date.now() - startTime < 600000) { // 10分以内
+                        document.getElementById('achievement4').style.opacity = '1';
+                        M.toast({html: '🏆 隠し実績解除：スピード探検家！', classes: 'rounded'});
+                    }
+                    
+                    // トースト通知
+                    M.toast({html: '🎓 おめでとう！モノづくりマスター認定を獲得しました！', classes: 'rounded'});
+                    
+                    // 実績セクションを表示
+                    document.getElementById('achievements').classList.remove('hidden');
+                }
+            });
+            
+            // 訪問時間記録
+            const startTime = Date.now();
+            
+            // 実績の初期非表示
+            document.querySelectorAll('.achievement').forEach(function(el) {
+                el.style.opacity = '0.3';
+                el.style.transition = 'opacity 0.5s ease';
+            });
+        });
+    </script>
+</body>
+</html>
